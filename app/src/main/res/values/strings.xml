@@ -9,4 +9,8 @@
     <string name="create_acount">Create acount</string>
     <string name="re_enter_password">Re-enter password</string>
     <string name="name">Name</string>
+    <string name="home">Home</string>
+    <string name="bid">Bid</string>
+    <string name="logout">Logout</string>
+    <string name="setting">Setting</string>
 </resources>
