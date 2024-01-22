@@ -1,6 +1,6 @@
 package com.rizadwi.mandiri.android.lalulelang.usecase.auth
 
-import com.rizadwi.mandiri.android.lalulelang.data.repository.UserRepository
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.repository.UserRepository
 import com.rizadwi.mandiri.android.lalulelang.util.data.ResourceResult
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject

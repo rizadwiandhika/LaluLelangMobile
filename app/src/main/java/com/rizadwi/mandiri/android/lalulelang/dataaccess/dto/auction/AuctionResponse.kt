@@ -1,4 +1,4 @@
-package com.rizadwi.mandiri.android.lalulelang.data.model.auction
+package com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.auction
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date

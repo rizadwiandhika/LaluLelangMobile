@@ -4,22 +4,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import com.rizadwi.mandiri.android.lalulelang.adapter.AuctionAdapter
-import com.rizadwi.mandiri.android.lalulelang.base.BaseFragment
+import com.rizadwi.mandiri.android.lalulelang.core.base.BaseFragment
 import com.rizadwi.mandiri.android.lalulelang.databinding.FragmentHomeBinding
 import com.rizadwi.mandiri.android.lalulelang.model.AuctionModel
+import com.rizadwi.mandiri.android.lalulelang.presentation.bid.BidActivity
+import com.rizadwi.mandiri.android.lalulelang.presentation.home.HomeMainActivity
+import com.rizadwi.mandiri.android.lalulelang.util.NavigationUtil
 import com.rizadwi.mandiri.android.lalulelang.util.data.UIState
 import com.rizadwi.mandiri.android.lalulelang.viewmodel.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private val auctionAdapter = AuctionAdapter()
+    @Inject
+    lateinit var auctionAdapter: AuctionAdapter
+
+    @Inject
+    lateinit var navigation: NavigationUtil
+
 
     override fun inflate(
         inflater: LayoutInflater,
@@ -37,7 +48,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
     private fun setupUI() {
+        auctionAdapter.setOnAuctionClicked(::onAuctionClicked)
         binding.rvAuction.adapter = auctionAdapter
+
         binding.svFilter.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -52,15 +65,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun observeViewModel() {
         viewModel.auctionLiveData.observe(viewLifecycleOwner) {
+
+            binding.pbLoading.visibility = View.GONE
+            binding.tvError.visibility = View.GONE
+            binding.rvAuction.visibility = View.GONE
+
             when (it) {
+                UIState.Loading -> binding.pbLoading.visibility = View.VISIBLE
                 is UIState.Error -> handleAuctionError(it.error)
-                UIState.Loading -> manageAuctionVisibility(AuctionState.LOADING)
                 is UIState.Success -> handleAuctionSuccess(it.data)
             }
         }
 
     }
-
 
     private fun fetchData() {
         viewModel.fetchListAuction()
@@ -72,43 +89,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             handleAuctionError(Error("There is no currently active auctions"))
             return
         }
-        manageAuctionVisibility(AuctionState.SUCCESS)
+        binding.rvAuction.visibility = View.VISIBLE
         auctionAdapter.setData(data)
     }
 
     private fun handleAuctionError(err: Error) {
-        manageAuctionVisibility(AuctionState.ERROR)
+        binding.tvError.visibility = View.VISIBLE
         binding.tvError.text = err.message
     }
 
-    private enum class AuctionState {
-        LOADING, ERROR, SUCCESS
+    private fun onAuctionClicked(auction: AuctionModel) {
+        navigation.moveForResult(
+            requireActivity() as AppCompatActivity,
+            BidActivity::class.java,
+            HomeMainActivity.INIT_FRAGMENT_CODE,
+            mapOf(BidActivity.AUCTION_ID to auction.id)
+        )
     }
-
-
-    private fun manageAuctionVisibility(status: AuctionState) {
-        when (status) {
-            AuctionState.LOADING -> {
-                binding.pbLoading.visibility = View.VISIBLE
-                binding.tvError.visibility = View.GONE
-                binding.rvAuction.visibility = View.GONE
-            }
-
-            AuctionState.ERROR -> {
-                binding.pbLoading.visibility = View.GONE
-                binding.tvError.visibility = View.VISIBLE
-                binding.rvAuction.visibility = View.GONE
-            }
-
-            AuctionState.SUCCESS -> {
-                binding.pbLoading.visibility = View.GONE
-                binding.tvError.visibility = View.GONE
-                binding.rvAuction.visibility = View.VISIBLE
-            }
-        }
-
-
-    }
-
 
 }

@@ -39,7 +39,7 @@ class AuthActivity : AppCompatActivity(), FragmentSwitcher {
     private fun observeViewModel() {
         viewModel.isAuthenticated.observe(this) {
             if (it) {
-                navigation.replace(this, HomeMainActivity::class.java)
+                navigation.move(this, HomeMainActivity::class.java)
             }
         }
     }
@@ -61,7 +61,7 @@ class AuthActivity : AppCompatActivity(), FragmentSwitcher {
     }
 
     private fun handleAuthenticated() {
-        navigation.replace(this, HomeMainActivity::class.java)
+        navigation.move(this, HomeMainActivity::class.java)
     }
 
 

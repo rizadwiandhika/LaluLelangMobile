@@ -1,4 +1,4 @@
-package com.rizadwi.mandiri.android.lalulelang.data.model.base
+package com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.base
 
 import com.google.gson.annotations.SerializedName
 

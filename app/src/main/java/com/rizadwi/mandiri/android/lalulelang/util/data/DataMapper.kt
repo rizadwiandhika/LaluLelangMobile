@@ -1,12 +1,12 @@
-package com.rizadwi.mandiri.android.lalulelang.mapper
+package com.rizadwi.mandiri.android.lalulelang.util.data
 
 import com.google.gson.Gson
 import com.rizadwi.mandiri.android.lalulelang.R
-import com.rizadwi.mandiri.android.lalulelang.data.model.auction.AuctionResponse
-import com.rizadwi.mandiri.android.lalulelang.data.model.auth.LoginResponse
-import com.rizadwi.mandiri.android.lalulelang.data.model.auth.RegisterUserResponse
-import com.rizadwi.mandiri.android.lalulelang.data.model.base.Success
-import com.rizadwi.mandiri.android.lalulelang.data.model.bid.BidResponse
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.auction.AuctionResponse
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.auth.LoginResponse
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.auth.RegisterUserResponse
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.base.Success
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.bid.BidResponse
 import com.rizadwi.mandiri.android.lalulelang.model.AuctionModel
 import com.rizadwi.mandiri.android.lalulelang.model.BidModel
 import com.rizadwi.mandiri.android.lalulelang.model.LoginModel

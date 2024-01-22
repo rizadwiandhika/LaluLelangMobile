@@ -4,19 +4,25 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.rizadwi.mandiri.android.lalulelang.core.Constant.Companion.MAX_DESCRIPTION
 import com.rizadwi.mandiri.android.lalulelang.databinding.ItemAuctionBinding
 import com.rizadwi.mandiri.android.lalulelang.model.AuctionModel
-import java.text.NumberFormat
-import java.util.Locale
+import com.rizadwi.mandiri.android.lalulelang.util.Formatter
+import javax.inject.Inject
 
-class AuctionAdapter : Adapter<AuctionAdapter.Holder>() {
+class AuctionAdapter @Inject constructor(private val formatter: Formatter) :
+    Adapter<AuctionAdapter.Holder>() {
 
-    private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+    private var onAuctionClicked: ((AuctionModel) -> Unit)? = null
     private var data: List<AuctionModel> = listOf()
 
     fun setData(data: List<AuctionModel>) {
         this.data = data
         notifyDataSetChanged()
+    }
+
+    fun setOnAuctionClicked(action: (AuctionModel) -> Unit) {
+        onAuctionClicked = action
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -36,25 +42,19 @@ class AuctionAdapter : Adapter<AuctionAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val auction = data[position]
 
-        val formattedPrice = currencyFormat.format(auction.price)
-        val formattedTime = auction.deadline.toString()
-
         with(holder.binding) {
             ivAuction.setImageResource(auction.image)
             tvTitle.text = auction.name
             tvTag.text = auction.topic
-            tvDescription.text = this@AuctionAdapter.liimtDescription(auction.description)
-            tvPrice.text = formattedPrice
-            tvDeadline.text = formattedTime
+            tvDescription.text = formatter.limitText(auction.description, MAX_DESCRIPTION)
+            tvPrice.text = formatter.formatIDR(auction.price)
+            tvDeadline.text = auction.deadline.toString()
         }
+
+        holder.binding.root.setOnClickListener { onAuctionClicked?.invoke(auction) }
+
     }
 
-    private fun liimtDescription(description: String): String {
-        if (description.length < 100) {
-            return description
-        }
-        return description.slice(IntRange(0, 100)) + "..."
-    }
 
     inner class Holder(val binding: ItemAuctionBinding) : ViewHolder(binding.root)
 

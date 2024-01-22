@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.rizadwi.mandiri.android.lalulelang.base.BaseFragment
+import com.rizadwi.mandiri.android.lalulelang.core.base.BaseFragment
 import com.rizadwi.mandiri.android.lalulelang.databinding.FragmentAuthRegisterBinding
 import com.rizadwi.mandiri.android.lalulelang.util.ToastUtil
 import com.rizadwi.mandiri.android.lalulelang.util.data.UIState

@@ -1,8 +1,8 @@
 package com.rizadwi.mandiri.android.lalulelang.usecase.home
 
-import com.rizadwi.mandiri.android.lalulelang.data.repository.AuctionRepository
-import com.rizadwi.mandiri.android.lalulelang.mapper.DataMapper
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.repository.AuctionRepository
 import com.rizadwi.mandiri.android.lalulelang.model.AuctionModel
+import com.rizadwi.mandiri.android.lalulelang.util.data.DataMapper
 import com.rizadwi.mandiri.android.lalulelang.util.data.ResourceResult
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject

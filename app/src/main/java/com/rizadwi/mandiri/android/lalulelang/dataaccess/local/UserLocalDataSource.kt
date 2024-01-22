@@ -1,4 +1,4 @@
-package com.rizadwi.mandiri.android.lalulelang.data.local
+package com.rizadwi.mandiri.android.lalulelang.dataaccess.local
 
 import com.rizadwi.mandiri.android.lalulelang.util.data.ResourceResult
 

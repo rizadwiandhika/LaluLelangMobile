@@ -1,43 +1,46 @@
-package com.rizadwi.mandiri.android.lalulelang.data.remote
+package com.rizadwi.mandiri.android.lalulelang.dataaccess.remote
 
-import android.util.Log
-import com.rizadwi.mandiri.android.lalulelang.data.model.auction.AuctionResponse
-import com.rizadwi.mandiri.android.lalulelang.data.model.base.Success
-import com.rizadwi.mandiri.android.lalulelang.data.service.LaluLelangService
+import com.rizadwi.mandiri.android.lalulelang.core.Constant.Companion.TOKEN_PREFIX
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.auction.AuctionResponse
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.base.Success
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.service.LaluLelangService
+import com.rizadwi.mandiri.android.lalulelang.util.ErrorCatcher
 import com.rizadwi.mandiri.android.lalulelang.util.data.ResourceResult
 import com.rizadwi.mandiri.android.lalulelang.util.extension.getResult
+import java.util.Calendar
 import javax.inject.Inject
 
-class AuctionRemoteDataSourceImpl @Inject constructor(private val service: LaluLelangService) :
+class AuctionRemoteDataSourceImpl @Inject constructor(
+    private val service: LaluLelangService,
+    private val c: ErrorCatcher
+) :
     AuctionRemoteDataSource {
     override suspend fun getAuctions(token: String): ResourceResult<Success<List<AuctionResponse>>> {
-        return try {
-            service.getAuctions(PREFIX + token).getResult()
-        } catch (err: Throwable) {
-            Log.d("riza", err.message ?: "Unknown error")
-            ResourceResult.Failure(Error(err.message))
-        }
+        return c.catchIfError {
+            when (val response = service.getAuctions(TOKEN_PREFIX + token).getResult()) {
+                is ResourceResult.Failure -> response
+                is ResourceResult.Success -> {
+                    val availableAuction =
+                        response.payload.data!!.filter { it.endAt.after(Calendar.getInstance().time) }
 
+                    ResourceResult.Success(
+                        Success(
+                            response.payload.message,
+                            response.payload.statusCode,
+                            availableAuction
+                        )
+                    )
+                }
+            }
+        }
     }
 
     override suspend fun getAuctionById(
         token: String,
         id: String
     ): ResourceResult<Success<AuctionResponse>> {
-        return catchIfError { service.getAuctionById(PREFIX + token, id).getResult() }
-    }
-
-    private inline fun <reified T : Any> catchIfError(action: () -> ResourceResult<T>): ResourceResult<T> {
-        return try {
-            action.invoke()
-        } catch (e: Throwable) {
-            Log.d("riza", e.message ?: "Unknown error")
-            ResourceResult.Failure(Error(e.message))
-        }
+        return c.catchIfError { service.getAuctionById(TOKEN_PREFIX + token, id).getResult() }
     }
 
 
-    companion object {
-        const val PREFIX = "Bearer "
-    }
 }

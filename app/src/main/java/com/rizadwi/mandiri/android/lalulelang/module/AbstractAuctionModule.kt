@@ -1,9 +1,9 @@
 package com.rizadwi.mandiri.android.lalulelang.module
 
-import com.rizadwi.mandiri.android.lalulelang.data.remote.AuctionRemoteDataSource
-import com.rizadwi.mandiri.android.lalulelang.data.remote.AuctionRemoteDataSourceImpl
-import com.rizadwi.mandiri.android.lalulelang.data.repository.AuctionRepository
-import com.rizadwi.mandiri.android.lalulelang.data.repository.AuctionRepositoryImpl
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.remote.AuctionRemoteDataSource
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.remote.AuctionRemoteDataSourceImpl
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.repository.AuctionRepository
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.repository.AuctionRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

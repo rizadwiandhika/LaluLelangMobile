@@ -1,7 +1,7 @@
 package com.rizadwi.mandiri.android.lalulelang.module
 
 import com.google.gson.Gson
-import com.rizadwi.mandiri.android.lalulelang.data.service.LaluLelangService
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.service.LaluLelangService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +28,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://192.168.43.61:8080/api/v1/")
+            .baseUrl("http://192.168.86.51:8080/api/v1/")
             .client(okHttpClient)
             .build()
     }

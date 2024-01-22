@@ -1,11 +1,11 @@
 package com.rizadwi.mandiri.android.lalulelang.module
 
-import com.rizadwi.mandiri.android.lalulelang.data.local.UserLocalDataSource
-import com.rizadwi.mandiri.android.lalulelang.data.local.UserLocalDataSourceImpl
-import com.rizadwi.mandiri.android.lalulelang.data.remote.UserRemoteDataSource
-import com.rizadwi.mandiri.android.lalulelang.data.remote.UserRemoteDataSourceImpl
-import com.rizadwi.mandiri.android.lalulelang.data.repository.UserRepository
-import com.rizadwi.mandiri.android.lalulelang.data.repository.UserRepositoryImpl
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.local.UserLocalDataSource
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.local.UserLocalDataSourceImpl
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.remote.UserRemoteDataSource
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.remote.UserRemoteDataSourceImpl
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.repository.UserRepository
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.repository.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,5 +24,5 @@ abstract class AbstractAuthenticationModule {
     @Binds
     abstract fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
 
-    
+
 }

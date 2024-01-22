@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rizadwi.mandiri.android.lalulelang.data.model.auth.LoginRequest
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.auth.LoginRequest
 import com.rizadwi.mandiri.android.lalulelang.usecase.auth.CheckIfAuthenticatedUseCase
 import com.rizadwi.mandiri.android.lalulelang.usecase.auth.LoginUseCase
 import com.rizadwi.mandiri.android.lalulelang.usecase.auth.LogoutUseCase

@@ -35,11 +35,8 @@ class HomeViewModel @Inject constructor(
     fun fetchListAuction() = viewModelScope.launch {
         _auctionLiveData.postLoading()
 
-        val token = getTokenUseCase.invoke()
-
-        delay(1000L)
-
-        when (val result = getListAuctionUseCase.invoke(token)) {
+        delay(500L)
+        when (val result = getListAuctionUseCase.invoke(getTokenUseCase.invoke())) {
             is ResourceResult.Failure -> {
                 _auctionLiveData.postError(result.cause)
                 Log.d("riza", "Get list auction error: ${result.cause.message}")

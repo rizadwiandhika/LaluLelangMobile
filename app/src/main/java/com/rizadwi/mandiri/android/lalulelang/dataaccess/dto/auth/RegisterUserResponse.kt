@@ -1,4 +1,4 @@
-package com.rizadwi.mandiri.android.lalulelang.data.model.auth
+package com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.auth
 
 data class RegisterUserResponse(
     val id: String,

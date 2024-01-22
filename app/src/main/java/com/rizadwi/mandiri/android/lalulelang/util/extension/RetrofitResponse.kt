@@ -2,7 +2,7 @@ package com.rizadwi.mandiri.android.lalulelang.util.extension
 
 import android.util.Log
 import com.google.gson.Gson
-import com.rizadwi.mandiri.android.lalulelang.data.model.base.Failure
+import com.rizadwi.mandiri.android.lalulelang.dataaccess.dto.base.Failure
 import com.rizadwi.mandiri.android.lalulelang.util.data.ResourceResult
 import retrofit2.Response
 
