@@ -20,6 +20,23 @@ class AuctionRemoteDataSourceImpl @Inject constructor(private val service: LaluL
 
     }
 
+    override suspend fun getAuctionById(
+        token: String,
+        id: String
+    ): ResourceResult<Success<AuctionResponse>> {
+        return catchIfError { service.getAuctionById(PREFIX + token, id).getResult() }
+    }
+
+    private inline fun <reified T : Any> catchIfError(action: () -> ResourceResult<T>): ResourceResult<T> {
+        return try {
+            action.invoke()
+        } catch (e: Throwable) {
+            Log.d("riza", e.message ?: "Unknown error")
+            ResourceResult.Failure(Error(e.message))
+        }
+    }
+
+
     companion object {
         const val PREFIX = "Bearer "
     }

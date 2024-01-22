@@ -11,4 +11,11 @@ class AuctionRepositoryImpl @Inject constructor(private val remote: AuctionRemot
     override suspend fun getAuction(token: String): ResourceResult<Success<List<AuctionResponse>>> {
         return remote.getAuctions(token)
     }
+
+    override suspend fun getAuctionById(
+        token: String,
+        id: String
+    ): ResourceResult<Success<AuctionResponse>> {
+        return remote.getAuctionById(token, id)
+    }
 }

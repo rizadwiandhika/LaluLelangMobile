@@ -6,4 +6,5 @@ import com.rizadwi.mandiri.android.lalulelang.util.data.ResourceResult
 
 interface AuctionRemoteDataSource {
     suspend fun getAuctions(token: String): ResourceResult<Success<List<AuctionResponse>>>
+    suspend fun getAuctionById(token: String, id: String): ResourceResult<Success<AuctionResponse>>
 }
