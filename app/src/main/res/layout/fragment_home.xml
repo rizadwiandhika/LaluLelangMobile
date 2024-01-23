@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="12dp"
     android:background="@color/white"
     tools:context=".presentation.home.HomeMainActivity">
 
@@ -11,11 +13,14 @@
         android:id="@+id/svFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16sp"
+        android:layout_marginHorizontal="12dp"
+        android:background="@drawable/rounded_background"
         app:iconifiedByDefault="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:queryBackground="@null"
         app:queryHint="Search topic..." />
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"

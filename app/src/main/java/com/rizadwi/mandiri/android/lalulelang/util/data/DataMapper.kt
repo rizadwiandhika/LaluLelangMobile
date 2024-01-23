@@ -36,9 +36,15 @@ class DataMapper @Inject constructor(private val gson: Gson) {
     }
 
     fun toBidModel(data: BidResponse): BidModel {
+        val img = when (data.auction.topic) {
+            "Gadget" -> "https://i.pinimg.com/originals/ca/42/81/ca42818475dc3b69641d6bda0c53e158.jpg"
+            "Kendaraan" -> "https://i.pinimg.com/originals/6c/f2/b2/6cf2b2be3f26e3c7dc68b9ccca3cd142.jpg"
+            else -> "https://png.pngtree.com/png-clipart/20190520/original/pngtree-question-mark-vector-icon-png-image_4017381.jpg"
+        }
+
         return BidModel(
             id = data.id,
-            image = R.drawable.illustration_auction,
+            image = img,
             name = data.auction.name,
             status = data.status,
             description = data.auction.description,

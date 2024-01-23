@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.rizadwi.mandiri.android.lalulelang.databinding.ActivityBidBinding
 import com.rizadwi.mandiri.android.lalulelang.model.AuctionModel
 import com.rizadwi.mandiri.android.lalulelang.presentation.home.HomeMainActivity
+import com.rizadwi.mandiri.android.lalulelang.util.Formatter
 import com.rizadwi.mandiri.android.lalulelang.util.ToastUtil
 import com.rizadwi.mandiri.android.lalulelang.util.data.UIState
 import com.rizadwi.mandiri.android.lalulelang.viewmodel.bid.BidViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.NumberFormat
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -21,10 +21,12 @@ class BidActivity : AppCompatActivity() {
     private val viewModel: BidViewModel by viewModels()
 
     private lateinit var binding: ActivityBidBinding
-    private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
 
     @Inject
     lateinit var toast: ToastUtil
+
+    @Inject
+    lateinit var formatter: Formatter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,12 +81,21 @@ class BidActivity : AppCompatActivity() {
 
     private fun handleAuctionSuccess(data: AuctionModel) {
         manageAuctionState(State.SUCCESS)
+        val img = when (data.topic) {
+            "Gadget" -> "https://i.pinimg.com/originals/ca/42/81/ca42818475dc3b69641d6bda0c53e158.jpg"
+            "Kendaraan" -> "https://i.pinimg.com/originals/6c/f2/b2/6cf2b2be3f26e3c7dc68b9ccca3cd142.jpg"
+            else -> "https://png.pngtree.com/png-clipart/20190520/original/pngtree-question-mark-vector-icon-png-image_4017381.jpg"
+        }
+
         with(binding) {
-            ivAuction.setImageResource(data.image)
+            Glide.with(this@BidActivity)
+                .load(img)
+                .into(ivAuction)
+
             tvTitle.text = data.name
             tvDescription.text = data.description
-            tvPrice.text = currencyFormat.format(data.price)
-            tvDeadline.text = data.deadline.toString()
+            tvPrice.text = formatter.formatIDR(data.price)
+            tvDeadline.text = formatter.formatDate(data.deadline)
 
             btnCreateBid.setOnClickListener { viewModel.createBid(etBid.text.toString(), data.id) }
         }

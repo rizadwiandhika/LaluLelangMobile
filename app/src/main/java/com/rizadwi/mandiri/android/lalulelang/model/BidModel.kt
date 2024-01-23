@@ -8,7 +8,7 @@ import java.util.Date
 @Parcelize
 data class BidModel(
     val id: String,
-    val image: Int,
+    val image: String,
     val name: String,
     val status: String,
     val description: String,

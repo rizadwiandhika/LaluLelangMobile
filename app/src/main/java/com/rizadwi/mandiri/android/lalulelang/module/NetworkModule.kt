@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -25,10 +26,13 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient
+    ): Retrofit {
+        val ipAddress = "192.168.0.103"
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://192.168.86.51:8080/api/v1/")
+            .baseUrl("http://$ipAddress:8080/api/v1/")
             .client(okHttpClient)
             .build()
     }

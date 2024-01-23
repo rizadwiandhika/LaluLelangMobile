@@ -1,17 +1,23 @@
 package com.rizadwi.mandiri.android.lalulelang.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
 import com.rizadwi.mandiri.android.lalulelang.R
 import com.rizadwi.mandiri.android.lalulelang.core.Constant.Companion.MAX_DESCRIPTION
 import com.rizadwi.mandiri.android.lalulelang.databinding.ItemBidBinding
 import com.rizadwi.mandiri.android.lalulelang.model.BidModel
 import com.rizadwi.mandiri.android.lalulelang.util.Formatter
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class PurchaseAdapter @Inject constructor(private val formatter: Formatter) :
+class PurchaseAdapter @Inject constructor(
+    private val formatter: Formatter,
+    @ApplicationContext private val context: Context
+) :
     Adapter<PurchaseAdapter.Holder>() {
     inner class Holder(val binding: ItemBidBinding) : ViewHolder(binding.root)
 
@@ -48,7 +54,10 @@ class PurchaseAdapter @Inject constructor(private val formatter: Formatter) :
         val bid = data[position]
 
         with(holder.binding) {
-            ivAuction.setImageResource(bid.image)
+            Glide.with(context)
+                .load(bid.image)
+                .into(ivAuction)
+
             tvTitle.text = bid.name
             tvTag.text = bid.status
             tvDeadline.text = bid.deadline.toString()
