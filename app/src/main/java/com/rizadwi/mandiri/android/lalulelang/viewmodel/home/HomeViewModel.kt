@@ -1,6 +1,5 @@
 package com.rizadwi.mandiri.android.lalulelang.viewmodel.home
 
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,27 +14,36 @@ import com.rizadwi.mandiri.android.lalulelang.util.extension.postError
 import com.rizadwi.mandiri.android.lalulelang.util.extension.postLoading
 import com.rizadwi.mandiri.android.lalulelang.util.extension.postSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getTokenUseCase: GetTokenUseCase,
     private val getListAuctionUseCase: GetListAuctionUseCase
 ) : ViewModel() {
-    private val handlerOnType = android.os.Handler(Looper.getMainLooper())
-
     private var auctions: List<AuctionModel> = mutableListOf()
 
     private val _auctionLiveData: MutableLiveData<UIState<List<AuctionModel>>> = MutableLiveData()
+
+    // https://stackoverflow.com/a/70754090/12407169
+    private val _flow = MutableSharedFlow<String>()
+
+    init {
+        viewModelScope.launch {
+            _flow.debounce(350).collect(::filterAuction)
+        }
+    }
 
     val auctionLiveData: LiveData<UIState<List<AuctionModel>>> get() = _auctionLiveData
 
     fun fetchListAuction() = viewModelScope.launch {
         _auctionLiveData.postLoading()
 
-        delay(500L)
         when (val result = getListAuctionUseCase.invoke(getTokenUseCase.invoke())) {
             is ResourceResult.Failure -> {
                 _auctionLiveData.postError(result.cause)
@@ -51,14 +59,15 @@ class HomeViewModel @Inject constructor(
     }
 
     fun prepareFilter(keyword: String) = viewModelScope.launch {
-        handlerOnType.removeCallbacksAndMessages(null)
-        handlerOnType.postDelayed({
-            if (keyword == "") {
-                _auctionLiveData.postSuccess(auctions)
-            } else {
-                _auctionLiveData.postSuccess(auctions.filter(onNameAndTopic(keyword)))
-            }
-        }, 350)
+        _flow.emit(keyword)
+    }
+
+    private fun filterAuction(keyword: String) {
+        if (keyword == "") {
+            _auctionLiveData.postSuccess(auctions)
+        } else {
+            _auctionLiveData.postSuccess(auctions.filter(onNameAndTopic(keyword)))
+        }
     }
 
     private fun onNameAndTopic(keyword: String): (AuctionModel) -> Boolean {
